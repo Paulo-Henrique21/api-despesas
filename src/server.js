@@ -9,6 +9,10 @@ import userRoutes from "./routes/userRoutes.js";
 import expenseRoutes from "./routes/expenseRoutes.js"; // atualizada para nova lógica
 import variantRoutes from "./routes/variantRoutes.js"; // nova rota
 import paymentRoutes from "./routes/paymentRoutes.js"; // nova rota
+import demoRoutes from "./routes/demoRoutes.js"; // rotas do usuário demo
+
+// Serviços
+import { initializeDemoUser, scheduleDailyReset } from "./services/demoUserService.js";
 
 dotenv.config();
 
@@ -27,11 +31,16 @@ app.use(cookieParser());
 // Conectar ao banco
 connectDB();
 
+// Inicializar usuário demo e agendar reset diário
+initializeDemoUser();
+scheduleDailyReset();
+
 // Rotas
 app.use("/api/users", userRoutes);
 app.use("/api/expenses", expenseRoutes); // inclui /monthly
 app.use("/api/variants", variantRoutes); // POST /:expenseId/variant
 app.use("/api/payments", paymentRoutes); // POST /:expenseId/pay
+app.use("/api/demo", demoRoutes); // rotas do usuário demo
 
 // Rota de saúde
 app.get("/", (req, res) => {

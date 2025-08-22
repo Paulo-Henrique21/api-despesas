@@ -4,10 +4,24 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
-    // 1. Extrair name, email e password do req.body
-    const { name, email, password } = req.body;
+    // 1. Extrair name, email, password e registerPassword do req.body
+    const { name, email, password, registerPassword } = req.body;
 
-    // 2. Verificar se o email já existe no banco
+    // 2. Verificar se a senha de registro foi fornecida
+    if (!registerPassword) {
+      return res.status(400).json({
+        message: "Senha de registro é obrigatória",
+      });
+    }
+
+    // 3. Verificar se a senha de registro está correta
+    if (registerPassword !== process.env.REGISTER_PASSWORD) {
+      return res.status(401).json({
+        message: "Senha de registro incorreta",
+      });
+    }
+
+    // 4. Verificar se o email já existe no banco
     const duplicateEmail = await User.findOne({ email });
     if (duplicateEmail) {
       return res.status(400).json({
@@ -15,10 +29,10 @@ export const register = async (req, res) => {
       });
     }
 
-    // 3. Criptografar a senha
+    // 5. Criptografar a senha
     const passwordCrypt = await bcrypt.hash(password, 10);
 
-    // 4. Criar o usuário no banco
+    // 6. Criar o usuário no banco
     const user = await User.create({
       name,
       email,
@@ -30,7 +44,7 @@ export const register = async (req, res) => {
         message: "Erro ao criar o usuário",
       });
     }
-    // 5. Retornar o usuário criado
+    // 7. Retornar o usuário criado
 
     return res.status(201).json({
       id: user.id,
