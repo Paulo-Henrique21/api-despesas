@@ -1,28 +1,36 @@
-# Use Node.js LTS
-FROM node:18-alpine
+# ---- Base: Node LTS (alpine) ----
+FROM node:20-alpine
 
-# Definir diretório de trabalho
+# Diretório de trabalho
 WORKDIR /app
 
-# Copiar package.json e package-lock.json (se existir)
+# Copia apenas os manifests primeiro (melhor cache)
 COPY package*.json ./
 
-# Instalar dependências
-RUN npm ci --only=production
+# Instala dependências de produção
+# Use uma das opções conforme sua versão do npm:
+# npm v10+:         npm ci --omit=dev
+# npm v8/v9 (ok):   npm ci --only=production
+RUN npm ci --omit=dev
 
-# Copiar código da aplicação
+# Copia o código da aplicação
 COPY src/ ./src/
 
-# Criar usuário não-root para segurança
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+# Cria usuário não-root por segurança
+RUN addgroup -g 1001 -S nodejs \
+  && adduser -S appuser -u 1001 \
+  && chown -R appuser:nodejs /app
 
-# Mudar ownership dos arquivos
-RUN chown -R nextjs:nodejs /app
-USER nextjs
+USER appuser
 
-# Expor porta
+# Porta (documentação; o Render injeta PORT em runtime)
+ENV PORT=8000
 EXPOSE 8000
 
-# Comando para iniciar a aplicação
+# Healthcheck (ajuste a rota se usar outra)
+# Alpine já possui wget (busybox). Se preferir curl, instale com: apk add --no-cache curl
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:${PORT}/health || exit 1
+
+# Comando de start (seu server deve usar process.env.PORT e bind 0.0.0.0)
 CMD ["node", "src/server.js"]
