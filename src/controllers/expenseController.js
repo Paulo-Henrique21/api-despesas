@@ -70,8 +70,22 @@ export const createExpense = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Erro ao criar despesa:", error.message);
+    
+    // Se for erro de validação do Mongoose, retorna 400
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        message: "Dados inválidos para criar despesa",
+        error: error.message,
+        details: Object.keys(error.errors).map(key => ({
+          field: key,
+          message: error.errors[key].message
+        }))
+      });
+    }
+    
+    // Outros erros retornam 500
     return res.status(500).json({
-      message: "Erro ao criar despesa",
+      message: "Erro interno ao criar despesa",
       error: error.message,
     });
   }

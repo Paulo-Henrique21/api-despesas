@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "set NODE_ENV=test&& jest",
+    "test:watch": "set NODE_ENV=test&& jest --watch",
+    "test:coverage": "set NODE_ENV=test&& jest --coverage",
+    "test:verbose": "set NODE_ENV=test&& jest --verbose",
     "dev": "nodemon src/server.js"
   },
   "keywords": [],
@@ -20,5 +23,12 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.3",
+    "@babel/preset-env": "^7.28.3",
+    "jest": "^30.0.5",
+    "mongodb-memory-server": "^10.2.0",
+    "supertest": "^7.1.4"
   }
 }

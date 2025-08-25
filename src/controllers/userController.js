@@ -114,7 +114,7 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      messege: "Erro ao fazer login",
+      message: "Erro ao fazer login",
       error: error.message,
     });
   }

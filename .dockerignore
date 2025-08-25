@@ -1,0 +1,48 @@
+# Dependências de desenvolvimento
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+
+# Cobertura de testes
+coverage/
+
+# Cache
+.npm
+.cache/
+
+# Arquivos temporários
+tmp/
+temp/
+
+# IDE
+.vscode/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentação de desenvolvimento
+*.md
+!README.md
+
+# Arquivos de teste (opcional - se não quiser testes na imagem)
+src/tests/
+jest.config.js
+babel.config.js

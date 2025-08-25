@@ -9,8 +9,17 @@ const expenseSchema = new mongoose.Schema(
     },
     name: { type: String, required: true },
     description: { type: String, default: "" },
-    amount: { type: Number, required: true },
-    dueDay: { type: Number, required: true },
+    amount: { 
+      type: Number, 
+      required: true,
+      min: [0.01, 'Valor deve ser maior que zero']
+    },
+    dueDay: { 
+      type: Number, 
+      required: true,
+      min: [1, 'Dia de vencimento deve ser entre 1 e 31'],
+      max: [31, 'Dia de vencimento deve ser entre 1 e 31']
+    },
     startDate: { type: Date, required: true },
     endDate: { type: Date, default: null },
     category: { type: String, required: true },
