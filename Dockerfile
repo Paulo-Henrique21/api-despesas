@@ -11,8 +11,8 @@ COPY package*.json ./
 # Use uma das opções conforme sua versão do npm:
 # npm v10+:         npm ci --omit=dev
 # npm v8/v9 (ok):   npm ci --only=production
-RUN npm ci --omit=dev
 
+RUN npm install --omit=dev
 # Copia o código da aplicação
 COPY src/ ./src/
 
