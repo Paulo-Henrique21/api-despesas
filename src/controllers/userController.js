@@ -65,44 +65,33 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    // 1. Extrair email e password do req.body
     const { email, password } = req.body;
 
-    // 2. Buscar o usuário pelo email
     const user = await User.findOne({ email });
-
-    // 3. Se não achar, retorna 404
-    if (!user) {
-      return res.status(404).json({
-        message: "Usuário não encontrado",
-      });
-    }
-
-    // 4. Comparar a senha com bcrypt.compare
+    if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) return res.status(401).json({ message: "Senha incorreta" });
 
-    // 5. Se estiver incorreta, retorna 401
-    if (!isPasswordCorrect) {
-      return res.status(401).json({
-        message: "Senha incorreta",
-      });
-    }
-    // 6. Gerar token JWT com id e role
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "30d" }
     );
 
-    // 7. Retornar token + dados do usuário
+    // ⭐ Opções do cookie para funcionar entre subdomínios em produção
+    const isProd = process.env.NODE_ENV === "production";
+    const domain = isProd ? (process.env.COOKIE_DOMAIN || ".onrender.com") : undefined;
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
+      secure: isProd,                         // necessário com SameSite=None
+      sameSite: isProd ? "none" : "lax",      // cross-site em prod
+      path: "/",
+      ...(domain && { domain }),              // visível em ui- e api-.onrender.com
+      maxAge: 30 * 24 * 60 * 60 * 1000,       // 30 dias
     });
+
     return res.status(200).json({
       message: "Login realizado com sucesso",
       user: {
@@ -113,19 +102,22 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Erro ao fazer login",
-      error: error.message,
-    });
+    res.status(500).json({ message: "Erro ao fazer login", error: error.message });
   }
 };
 
 export const logout = (req, res) => {
+  const isProd = process.env.NODE_ENV === "production";
+  const domain = isProd ? (process.env.COOKIE_DOMAIN || ".onrender.com") : undefined;
+
   res.clearCookie("token", {
+    path: "/",
+    ...(domain && { domain }),
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
   });
+
   res.status(200).json({ message: "Logout realizado com sucesso" });
 };
 
