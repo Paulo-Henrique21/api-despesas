@@ -116,6 +116,7 @@ export const logout = (req, res) => {
     secure: isProd,
     sameSite: isProd ? "none" : "lax",
     httpOnly: true,
+    maxAge: 0, // Força expiração imediata
   });
 
   res.status(200).json({ message: "Logout realizado com sucesso" });
