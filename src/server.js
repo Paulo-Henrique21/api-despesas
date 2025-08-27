@@ -77,7 +77,7 @@ const app = express();
 app.set("trust proxy", 1);
 
 /** 2) CORS com múltiplas origens (dev + prod) */
-const allowedOrigins = (process.env.CORS_ORIGINS || process.env.FRONTEND_URL || "")
+const allowedOrigins = (process.env.CORS_ORIGINS)
   .split(",")
   .map(s => s.trim())
   .filter(Boolean);
