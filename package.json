@@ -27,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.28.3",
     "@babel/preset-env": "^7.28.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "jest": "^30.0.5",
     "mongodb-memory-server": "^10.2.0",
     "supertest": "^7.1.4"

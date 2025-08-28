@@ -71,7 +71,7 @@ export const login = async (req, res) => {
     if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) return res.status(401).json({ message: "Senha incorreta" });
+    if (!isPasswordCorrect) return res.status(401).json({ message: "E-mail ou Senha incorreta" });
 
     const token = jwt.sign(
       { id: user.id, role: user.role },
