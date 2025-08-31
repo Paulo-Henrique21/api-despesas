@@ -5,21 +5,21 @@ API REST para controle de despesas recorrentes, desenvolvida com Node.js, Expres
 
 ## 🚀 Tecnologias Utilizadas
 
+
 ### Core
-- **Node.js**
-```
+**Node.js**
 
 ## 🔐 Variáveis de Ambiente Obrigatórias
 
-| Variável | Descrição | Exemplo |
-|----------|-----------|---------|
-| `PORT` | Porta do servidor | `8000` |
-| `MONGODB_URI` | URI do MongoDB | `mongodb://localhost:27017/despesas_recorrentes` |
-| `JWT_SECRET` | Chave secreta JWT | `chave-super-secreta` |
-| `FRONTEND_URL` | URL do frontend | `http://localhost:3000` |
-| `REGISTER_PASSWORD` | Senha para registro | `admin123` |
-| `DEMO_USER_EMAIL` | Email do usuário demo | `demo@exemplo.com` |
-| `DEMO_USER_PASSWORD` | Senha do usuário demo | `visitante@2025` |
+| Variável              | Descrição                  | Exemplo                                         |
+|-----------------------|----------------------------|-------------------------------------------------|
+| `PORT`                | Porta do servidor          | `8000`                                          |
+| `MONGODB_URI`         | URI do MongoDB             | `mongodb://localhost:27017/despesas_recorrentes` |
+| `JWT_SECRET`          | Chave secreta JWT          | `chave-super-secreta`                            |
+| `FRONTEND_URL`        | URL do frontend            | `http://localhost:3000`                          |
+| `REGISTER_PASSWORD`   | Senha para registro        | `admin123`                                      |
+| `DEMO_USER_EMAIL`     | Email do usuário demo      | `demo@exemplo.com`                               |
+| `DEMO_USER_PASSWORD`  | Senha do usuário demo      | `visitante@2025`                                 |
 
 ## 🎯 Endpoints Principais
 
@@ -60,23 +60,9 @@ API REST para controle de despesas recorrentes, desenvolvida com Node.js, Expres
 
 ```bash
 # Build da imagem
-  "registerPassword": "admin123"
 
 # Executar com Docker Compose
-}
 ```
-
-## 🤝 Contribuindo
-
-1. Faça o fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/sua-feature`)
-3. Commit suas mudanças (`git commit -m 'feat: minha feature'`)
-4. Push para a branch (`git push origin feature/sua-feature`)
-5. Abra um Pull Request
-
-## 📝 Licença
-
-Este projeto está sob a licença ISC.
 
 ## 👨‍💻 Autor
 
