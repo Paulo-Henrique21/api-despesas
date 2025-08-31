@@ -210,18 +210,6 @@ npm run test:watch   # Testes em modo watch
 npm run test:coverage # Cobertura de testes
 ```
 
-## 🤝 Contribuindo
-
-1. Faça o fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-## 📝 Licença
-
-Este projeto está sob a licença ISC.
-
 ## 👨‍💻 Autor
 
 Paulo Henrique - [@Paulo-Henrique21](https://github.com/Paulo-Henrique21)
