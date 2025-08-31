@@ -67,7 +67,6 @@ export const updateMonthlyExpenseStatus = async (req, res) => {
     const { id } = req.params;
     const { paymentStatus } = req.body;
 
-    // 1. Validar se o status é "paid" ou "unpaid"
 
     if (!["paid", "unpaid"].includes(paymentStatus)) {
       return res.status(400).json({
@@ -75,23 +74,19 @@ export const updateMonthlyExpenseStatus = async (req, res) => {
       });
     }
 
-    // 2. Buscar a MonthlyExpense pelo id e verificar se pertence ao user
 
     const monthlyExpense = await MonthlyExpense.findOne({ _id: id, userId });
 
-    // 3. Se não encontrar ou não for do usuário, retornar erro 404
     if (!monthlyExpense) {
       return res.status(404).json({
         message: "Despesa mensal não encontrada",
       });
     }
 
-    // 4. Atualizar o campo paymentStatus
 
     monthlyExpense.paymentStatus = paymentStatus;
     await monthlyExpense.save();
 
-    // 5. Retornar a instância atualizada
 
     return res.status(200).json({
       message: "Status atualizado com sucesso!",
@@ -148,17 +143,13 @@ export const deleteMonthlyExpense = async (req, res) => {
     const userId = req.user.id;
     const { id } = req.params;
 
-    // 1. Buscar a instância pelo ID + userId
     const monthlyExpense = await MonthlyExpense.findOne({ _id: id, userId });
-    // 2. Se não encontrar → 404
     if (!monthlyExpense) {
       return res.status(404).json({
         message: "Despesa mensal não encontrada",
       });
     }
-    // 3. Remover a instância
     await MonthlyExpense.deleteOne({ _id: id, userId });
-    // 4. Retornar sucesso
     return res.status(200).json({
       message: "Despesa mensal deletada com sucesso!",
     });
@@ -175,27 +166,22 @@ export const deleteFutureMonthlyExpenses = async (req, res) => {
     const userId = req.user.id;
     const { id } = req.params;
 
-    // 1. Buscar a instância atual (confirma se existe e pertence ao user)
     const currentInstance = await MonthlyExpense.findOne({ _id: id, userId });
 
-    // 2. Se não encontrar → 404
     if (!currentInstance) {
       return res.status(404).json({
         message: "Despesa mensal não encontrada",
       });
     }
 
-    // 3. Extrair expenseId, month e year
     const { expenseId, month, year } = currentInstance;
 
-    // 4. Deletar todas as instâncias futuras
     const result = await MonthlyExpense.deleteMany({
       userId,
       expenseId,
       $or: [{ year: { $gt: year } }, { year: year, month: { $gte: month } }],
     });
 
-    // 5. Retornar a quantidade de registros removidos
     return res.status(200).json({
       message: "Despesas futuras deletadas com sucesso!",
       deleted: result.deletedCount,
@@ -213,7 +199,6 @@ export const deleteAllExpensesOfBase = async (req, res) => {
     const userId = req.user.id;
     const { id: expenseId } = req.params; // Agora o ID recebido é o expenseId
 
-    // 1. Verificar se a despesa base existe e pertence ao usuário
     const expense = await Expense.findOne({ _id: expenseId, userId });
 
     if (!expense) {
@@ -222,13 +207,10 @@ export const deleteAllExpensesOfBase = async (req, res) => {
       });
     }
 
-    // 2. Deletar todas as instâncias mensais associadas
     await MonthlyExpense.deleteMany({ expenseId, userId });
 
-    // 3. Deletar a despesa base
     await Expense.deleteOne({ _id: expenseId, userId });
 
-    // 4. Retornar sucesso
     return res.status(200).json({
       message: "Despesa completa deletada com sucesso!",
     });

@@ -34,20 +34,6 @@ export const createExpense = async (req, res) => {
     const now = dayjs();
     const start = dayjs(startDate);
 
-    // const isSameMonth =
-    //   start.month() === now.month() && start.year() === now.year();
-
-    // if (paymentStatus === "paid" && isSameMonth) {
-    //   await Payment.create({
-    //     expenseId: expense._id,
-    //     month: now.format("YYYY-MM"),
-    //     amount,
-    //     paidAt: new Date(),
-    //     method: "manual",
-    //     note: "Marcado como pago na criação",
-    //     status: "confirmed",
-    //   });
-    // }
     if (paymentStatus === "paid") {
       const paymentMonth = dayjs(startDate).format("YYYY-MM");
 
