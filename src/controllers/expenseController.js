@@ -17,10 +17,9 @@ export const createExpense = async (req, res) => {
       startDate,
       endDate,
       category,
-      paymentStatus, // ← opcional: "paid" ou "unpaid"
+      paymentStatus,
     } = req.body;
 
-    // 1. Cria a despesa base
     const expense = await Expense.create({
       userId,
       name,
@@ -32,7 +31,6 @@ export const createExpense = async (req, res) => {
       category,
     });
 
-    // 2. Verifica se é o mês atual e se deve marcar como pago
     const now = dayjs();
     const start = dayjs(startDate);
 
@@ -119,13 +117,11 @@ export const getMonthlyExpenses = async (req, res) => {
 
     const expenseIds = expenses.map((e) => e._id.toString());
 
-    // 2. Buscar variants e payments do mês
     const [variants, payments] = await Promise.all([
       ExpenseVariant.find({ expenseId: { $in: expenseIds }, month }).lean(),
       Payment.find({ expenseId: { $in: expenseIds }, month }).lean(),
     ]);
 
-    // 3. Montar resposta combinando tudo
     const result = expenses.map((expense) => {
       const variant = variants.find(
         (v) => v.expenseId.toString() === expense._id.toString()

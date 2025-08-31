@@ -1,19 +1,3 @@
-// import mongoose from "mongoose";
-// import dotenv from "dotenv";
-// dotenv.config();
-
-// const connectDB = async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGODB_URI);
-//     console.log("MongoDB conectado com sucesso!");
-//   } catch (error) {
-//     console.error(`Erro ao conectar ao MongoDB: ${error.message}`);
-//     process.exit(1);
-//   }
-// };
-
-// export default connectDB;
-
 import mongoose from "mongoose";
 
 export default async function connectDB() {
@@ -21,7 +5,7 @@ export default async function connectDB() {
   const dbName = process.env.MONGO_DB_NAME || "despesas";
 
   if (!uri) {
-    console.error("❌ MONGO_URI/MONGODB_URI não definidos");
+    console.error("❌ MONGODB_URI/MONGO_URI não definidos");
     process.exit(1);
   }
 
